@@ -1,1 +1,1 @@
-Sitemap: https://6edb5098-171a-4bcb-94f6-b406b536d8b9.netlify.app/sitemap.xml
+Sitemap: https://davidkane.quarto.pub/immigration/sitemap.xml

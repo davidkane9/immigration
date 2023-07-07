@@ -1,5 +1,4 @@
 ---
-title: "immigration"
 execute: 
   echo: false
 ---
@@ -19,10 +18,45 @@ x <- trains |>
 ```
 
 ```{r}
-stan_glm(data = x, 
-         formula = att_end ~ liberal + att_start, 
-         family = gaussian, 
-         refresh = 0,
-         seed = 9)
+fit_obj <- stan_glm(data = x, 
+                    formula = att_end ~ liberal + att_start, 
+                    family = gaussian, 
+                    refresh = 0,
+                    seed = 9)
 ```
+
+## Model Definition
+
+$$y_i = \beta_0  + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \epsilon_i$$
+
+with $y = att\_end$, $x_1 = att\_start$, $x_2 = liberal$, and $\epsilon_i \sim N(0, \sigma^2)$.
+
+
+## Answer
+
+```{r}
+new_obs <- tibble(att_start = 6, liberal = TRUE)
+```
+
+```{r}
+pe <- posterior_epred(object = fit_obj, newdata = new_obs) |> 
+  as_tibble()
+```
+
+
+```{r}
+pe |> 
+  ggplot(aes(x = `1`)) +
+    geom_histogram(aes(y = after_stat(count/sum(count))),
+                   bins = 100)  +
+    labs(title = "Posterior for the Expected Attitude of a Liberal with Starting Attitude of 6",
+         subtitle = "Expected values are always less variable than individual predictions",
+         x = "Immigration Attitude at End of Experiment",
+         y = "Probability") +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_classic()
+```
+
+
+
 
