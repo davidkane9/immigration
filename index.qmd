@@ -1,0 +1,16 @@
+---
+title: "immigration"
+execute: 
+  echo: false
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(primer.data)
+```
+
+```{r}
+trains
+```
+
